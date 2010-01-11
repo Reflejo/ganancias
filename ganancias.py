@@ -15,7 +15,7 @@ Ejemplo:
 
     # Aportes de enero
     >>> for aporte, monto in ganancias.meses[0].aportes:
-    ...     print "Aporte de %s = $%.2f" % (apote, monto)
+    ...     print "Aporte de %s = $%.2f" % (aporte, monto)
     Aporte de Jubilación = $880.00
     Aporte de INSSJP = $240.00
     Aporte de Obra Social = $240.00
@@ -133,7 +133,7 @@ class Ganancias(object):
         """
         meses = [mes] if mes else xrange(12)
         for mes in meses:
-            self.meses[mes].agregar_deduccion(deduccion, cantidad)
+            self.meses[mes].agregar_deduccion(deduccion, cantidad, self)
 
     def calcular_ganancias(self):
         """
@@ -223,15 +223,21 @@ class Sueldo(object):
 
         self.deducciones.remove(POSIBLES_DEDUCCIONES[deduccion])
 
-    def agregar_deduccion(self, deduccion, cantidad=None):
+    def agregar_deduccion(self, deduccion, cantidad=None, ganancias=None):
         """
         Agregar una deducción al sueldo. Las deducciones se encuentran en el 
         módulo 'deduccion'.
         """
         if deduccion < 0 or deduccion > len(POSIBLES_DEDUCCIONES):
-            raise ValueError(u"Tipo de deducción inválida")
+            raise ValueError("Tipo de deducción inválida")
 
         deduccion = POSIBLES_DEDUCCIONES[deduccion]
+        deduccion.ganancias = ganancias
+        
+        if not ganancias and not deduccion.cantidad:
+            raise ValueError("Esta deducción es anual y debe agregarse "\
+                             "al objeto ganancias.")
+
         if cantidad:
             deduccion.cantidad = cantidad
 
