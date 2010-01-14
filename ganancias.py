@@ -117,6 +117,9 @@ class Ganancias(object):
         # Suma todos los sueldos brutos del año.
         return sum(self.meses).bruto
 
+    def _ganancia_neta_anual(self):
+        return sum(self.meses).ganancia_neta
+
     def eliminar_deduccion(self, deduccion, mes=None):
         """
         Eliminar una deducción en el mes dado. Si no se especifica ningún
@@ -181,6 +184,7 @@ class Ganancias(object):
             impuesto_acumulado += impuesto
 
     bruto_anual = property(_bruto_anual)
+    ganancia_neta_anual = property(_ganancia_neta_anual)
     impuesto_anual = property(_impuesto_anual)
 
 
@@ -206,6 +210,11 @@ class Sueldo(object):
             raise ValueError("El impuesto a las ganancias no está calculado")
 
         return self._impuesto_ganancias
+
+    def _ganancia_neta(self):
+        # La ganancia neta corresponde al bruto sin los aportes
+        contrib_suma = sum((a[1] for a in self.aportes))
+        return self.bruto - contrib_suma
 
     def _sueldo_neto(self):
         # El sueldo neto corresponde al bruto sin los aportes e impuestos
@@ -290,5 +299,6 @@ class Sueldo(object):
 
     aportes = property(_aportes)
     neto = property(_sueldo_neto)
+    ganancia_neta = property(_ganancia_neta)
     impuesto_ganancias = property(_impuesto_ganancias, _set_impuesto_ganancias)
 

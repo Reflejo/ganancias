@@ -18,9 +18,10 @@ HOSPITALIZACION = 7
 SEPELIO = 8
 SEGURO_RETIRO = 9
 EMPLEADO_DOMESTICO = 10
-DEDUCCION_ESPECIAL_REL = 11
-DEDUCCION_ESPECIAL_AUTON = 12
-GANANCIA_NO_IMPONIBLE = 13
+ASISTENCIA_SANITARIA = 11
+DEDUCCION_ESPECIAL_REL = 12
+DEDUCCION_ESPECIAL_AUTON = 13
+GANANCIA_NO_IMPONIBLE = 14
 
 
 class Deduccion(object):
@@ -78,13 +79,15 @@ POSIBLES_DEDUCCIONES = [
     Deduccion(u'Padres y otros', Decimal('3750.0')),
     Deduccion(u'Crédito hipotecario', maximo='20000.0'),
     Deduccion(u'Seguro de vida', maximo='996.23'),
-    Deduccion(u'Donaciones', maximo='{bruto_anual} * 0.05'),
-    Deduccion(u'Prepagas médicas', maximo='{bruto_anual} * 0.05'),
+    Deduccion(u'Donaciones', maximo='{ganancia_neta_anual} * 0.05'),
+    Deduccion(u'Prepagas médicas', maximo='{ganancia_neta_anual} * 0.05'),
     Deduccion(u'Honorarios de hospitalización',
-              maximo='{bruto_anual} * 0.05'),
+              maximo='{ganancia_neta_anual} * 0.05'),
     Deduccion(u'Gastos de sepelio', maximo='996.23'),
     Deduccion(u'Seguro de retiro privados', maximo='1261.16'),
     Deduccion(u'Empleados domésticos', maximo='9000.0'),
+    Deduccion(u'Asistencia sanitaria', maximo='0.4 * {_cantidad}'),
+
     Deduccion(u'Deducción especial (inc e)', Decimal('43200'), 
               autonomo=False),
     Deduccion(u'Deducción especial (inc c)', Decimal('9000.0'), 
